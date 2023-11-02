@@ -1,6 +1,6 @@
 <template>
 	<view>
-		home
+	home	
 	</view>
 </template>
 
