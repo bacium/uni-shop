@@ -29,6 +29,14 @@ $http.afterRequest=function(option) {
 }
 
 
+// 封装一个全局提示方法
+uni.$showMsg=function(title="数据加载中……" , duration=2000){
+	uni.showToast({
+		title,
+		duration,
+		icon:"none"
+	})
+}
 
 
 Vue.config.productionTip = false
