@@ -1,28 +1,34 @@
 <template>
-	<view class="scroll-view-content">
-		<!-- 左侧 -->
-		<scroll-view scroll-y="true" :style="{height:screenHeight+'px'}" class="scroll-view-left" >
-			<block v-for="item,index in cateList" :key="index" >
-				<view :class="['scroll-content',index===activeIndex?'active':'']" @click="toggleActive(index)">{{item.cat_name}}</view>
-			</block>
-		</scroll-view>
-		
-		<!-- 右侧 -->
-		<scroll-view :scroll-top="scrollTop" scroll-y="true"  :style="{height:screenHeight+'px'}" class="scroll-view-right" >
-			<view class="cate-lv2-list" v-for="item2,index2 in cateLeval2" :key="index2">
-				<view class="cate-lv2-title">
-					/{{item2.cat_name}}/
-				</view>
-				<view class="cate-lv3-detail" >
-					<view class="cate-lv3-item" v-for="(item3,index3) in item2.children" :key="index3" @click="gotoGoodsDetail(item3)">
-						<image :src="item3.cat_icon"></image>
-						<text>{{item3.cat_name}}</text>
+	<view>
+		<view class="search">
+			<my-search @click="gotoSearch"></my-search>
+		</view>
+		<view class="scroll-view-content">
+			<!-- 左侧 -->
+			<scroll-view scroll-y="true" :style="{height:screenHeight+'px'}" class="scroll-view-left" >
+				<block v-for="item,index in cateList" :key="index" >
+					<view :class="['scroll-content',index===activeIndex?'active':'']" @click="toggleActive(index)">{{item.cat_name}}</view>
+				</block>
+			</scroll-view>
+			
+			<!-- 右侧 -->
+			<scroll-view :scroll-top="scrollTop" scroll-y="true"  :style="{height:screenHeight+'px'}" class="scroll-view-right" >
+				<view class="cate-lv2-list" v-for="item2,index2 in cateLeval2" :key="index2">
+					<view class="cate-lv2-title">
+						/{{item2.cat_name}}/
+					</view>
+					<view class="cate-lv3-detail" >
+						<view class="cate-lv3-item" v-for="(item3,index3) in item2.children" :key="index3" @click="gotoGoodsDetail(item3)">
+							<image :src="item3.cat_icon"></image>
+							<text>{{item3.cat_name}}</text>
+						</view>
 					</view>
 				</view>
-			</view>
-			
-		</scroll-view>
+				
+			</scroll-view>
+		</view>
 	</view>
+	
 </template>
 
 <script>
@@ -62,6 +68,11 @@
 			gotoGoodsDetail(item) {
 				uni.navigateTo({
 					url:'/subpkg/goods_list/goods_list?cid='+item.cat_id
+				})
+			},
+			gotoSearch(){
+				uni.navigateTo({
+					url:"/subpkg/search/search"
 				})
 			}
 		}
@@ -126,6 +137,10 @@
 	
 	}
 }
-
+.search{
+	position: sticky;
+	top: 0;
+	z-index: 999;
+}
 
 </style>

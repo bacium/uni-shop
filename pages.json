@@ -1,16 +1,6 @@
 {
 	"pages": [
 		{
-		    "path" : "pages/cate/cate",
-		    "style" :                                                                                    
-		    {
-		        "navigationBarTitleText": "",
-		        "enablePullDownRefresh": false
-		    }
-		    
-		}
-		,
-		{
 		    "path" : "pages/home/home",
 		    "style" :                                                                                    
 		    {
@@ -29,15 +19,15 @@
             
         }
         
-        // ,{
-        //     "path" : "pages/cate/cate",
-        //     "style" :                                                                                    
-        //     {
-        //         "navigationBarTitleText": "",
-        //         "enablePullDownRefresh": false
-        //     }
+        ,{
+            "path" : "pages/cate/cate",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
             
-        // }
+        }
         ,{
             "path" : "pages/my/my",
             "style" :                                                                                    
@@ -91,6 +81,15 @@
 				
 			{
                     "path" : "goods_list/goods_list",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "search/search",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",
