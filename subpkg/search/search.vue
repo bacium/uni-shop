@@ -99,7 +99,7 @@
 			// 清空搜索记录
 			clearSearch(){
 				this.historyList=[]
-				uni.setStorageSync('searchValue',[])
+				uni.setStorageSync('searchValue',"[]")
 			},
 			gotoGoods_list(item){
 				uni.navigateTo({
