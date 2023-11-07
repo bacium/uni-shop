@@ -44,7 +44,7 @@
 		},
 		async onLoad() {
 			const sysInfo=await uni.getSystemInfoAsync()
-			this.screenHeight=sysInfo[1].windowHeight
+			this.screenHeight=sysInfo[1].windowHeight-50
 			this.getCateList()
 		},
 		methods:{
