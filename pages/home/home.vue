@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view class="search">
-			<my-search @click="gotoSearch"></my-search>
+			<my-search @click="gotoSearch"></my-search> 
 		</view>
 		<view>
 			<swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
@@ -74,7 +74,7 @@
 			},
 			async	getNavList(){
 				const {data}=await uni.$http.get("/api/public/v1/home/catitems")
-				console.log(data,"分类数据");
+				// console.log(data,"分类数据");
 				if(data.meta.status!==200){
 					uni.$showMsg("数据获取失败")
 				}
@@ -90,7 +90,7 @@
 			},
 			async getFloorList(){
 				const {data}=await uni.$http.get("/api/public/v1/home/floordata")
-				console.log(data,"楼层数据");
+				// console.log(data,"楼层数据");
 				if(data.meta.status!==200){
 					uni.$showMsg("数据获取失败")
 				}
