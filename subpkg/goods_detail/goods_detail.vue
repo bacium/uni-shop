@@ -44,7 +44,25 @@
 </template>
 
 <script>
+	import {mapState,mapMutations,mapGetters} from 'vuex'
+	
 	export default {
+		computed:{
+		...mapState('cart',[])	,
+		...mapGetters('cart',['goodsTotal'])
+		},
+		watch:{
+			goodsTotal:{
+				handler(newValue) {
+					const targetButton=this.options.find(x=>x.text==="购物车")
+					if(targetButton){
+						targetButton.info=newValue
+					}
+				},
+				immediate:true
+			}
+			
+		},
 		data() {
 			return {
 				goods_id:'',
@@ -56,7 +74,7 @@
 				    }, {
 				      icon: 'cart',
 				      text: '购物车',
-				      info: 2
+				      info: 0
 				    }],
 				    // 右侧按钮组的配置对象
 				    buttonGroup: [{
@@ -78,11 +96,13 @@
 			this.getGoodsDetail(this.goods_id)
 		},
 		methods:{
+			...mapMutations('cart',['addToCart']),
 			async getGoodsDetail(id){
 				const {data}=await uni.$http.get('/api/public/v1/goods/detail',{goods_id:Number(id)})
 				// console.log(data,'2222');
 				if(data.meta.status!==200) return uni.$showMsg('商品信息获取失败')
 				data.message.goods_introduce=data.message.goods_introduce.replace(/<img /g, '<img style="display:block;" ').replace(/webp/g,'jpg')
+				
 				this.goods_info=data.message
 			},
 			// 图片预览
@@ -93,11 +113,25 @@
 				})
 			},
 			onClick(e) {
-				console.log(e);
+				// console.log(e);
 				if(e.content.text==="购物车") {
 					uni.switchTab({
 						url:'/pages/cart/cart'
 					})
+				}
+			},
+			buttonClick(e){
+				// console.log(e,'右侧');
+				if(e.content.text==="加入购物车") {
+					const goods={
+						goods_id:this.goods_info.goods_id, 
+						goods_name:this.goods_info.goods_name, 
+						goods_price:this.goods_info.goods_price, 
+						goods_count:1, 
+						goods_small_logo:this.goods_info.goods_small_logo, 
+						goods_state:this.goods_info.goods_state
+					}
+					this.addToCart(goods)
 				}
 			}
 		}

@@ -68,8 +68,7 @@
 
 <style lang="scss">
 	.goods-box {
-		padding: 10px 5px;
+		// padding: 10px 5px;
 		
-	
 	}
 </style>
