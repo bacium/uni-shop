@@ -42,14 +42,42 @@ export default {
 				this.commit('cart/saveStorage')
 			}
 			
+		},
+		// 更新商品数量
+		updateGoodsCount(state,goods) {
+			const goods_info=state.cart.find(x=>x.goods_id===goods.goods_id)
+			
+			if(goods_info) {
+				goods_info.goods_count=goods.goods_count
+				this.commit('cart/saveStorage')
+			}
+		},
+		// 删除购物车商品
+		deleteGoods(state,goods_id){
+			state.cart=state.cart.filter(x=>x.goods_id!==goods_id)
+			this.commit('cart/saveStorage')
+		},
+		// 全选或者反选状态
+		allCheckToggle(state,newState){
+			state.cart.forEach(x=>x.goods_state=newState)
+				this.commit('cart/saveStorage')
 		}
 	},
 	getters:{
+		// 商品总数
 		goodsTotal(state){
 			let count=0
 			state.cart.forEach(x=>count+=x.goods_count)
-			console.log(count);
+			// console.log(count);
 			return count
+		},
+		// 选中的商品总数
+		allSelect_count(state) {
+		return	state.cart.filter(x=>x.goods_state===true).reduce((total,item)=>total+=item.goods_count,0)
+		},
+		// 计算选中的总价
+		selected_All_Price(state) {
+			return state.cart.filter(x=>x.goods_state===true).reduce((allPrice,item)=>allPrice+=item.goods_count*item.goods_price,0).toFixed(2)
 		}
 	}
 }
