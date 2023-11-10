@@ -15,13 +15,13 @@
 	
 	<!-- 结算按钮 -->
 	<view class="settle-bth">
-		<button>结算({{allSelect_count}})</button>
+		<button @click="settle">结算({{allSelect_count}})</button>
 	</view>
 	</view>
 </template>
 
 <script>
-	import {mapGetters,mapMutations} from 'vuex'
+	import {mapGetters,mapMutations,mapState} from 'vuex'
 	export default {
 		name:"my-settle",
 		data() {
@@ -31,6 +31,8 @@
 		},
 		computed:{
 			...mapGetters('cart',['allSelect_count','goodsTotal','selected_All_Price']),
+			...mapGetters('user',['combineAddress']),
+			...mapState('user',['token']),
 			allChecked(){
 				return this.goodsTotal===this.allSelect_count
 			}
@@ -39,6 +41,19 @@
 			...mapMutations('cart',['allCheckToggle']),
 			allCheckChange(){
 				this.allCheckToggle(!this.allChecked)
+			},
+			settle(){
+				// 判断是否选择了商品
+				if(!this.allSelect_count) return uni.$showMsg('请选择要结算的商品！')
+				// 判断是否选择了收货地址
+				if(!this.combineAddress) return uni.$showMsg('请选择收货地址！')
+				// 判断是否登录
+				if(!this.token) {
+					uni.$showMsg('请先登录')
+					uni.switchTab({
+						url:'/pages/my/my'
+					})
+				}
 			}
 		}
 	}

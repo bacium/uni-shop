@@ -7,7 +7,9 @@ export default {
 	
 	// 定义状态
 	state:()=>({
-		address:JSON.parse(uni.getStorageSync('address')|| '{}')
+		address:JSON.parse(uni.getStorageSync('address')|| '{}'),
+		token:'',
+		userInfo:JSON.parse(uni.getStorageSync('userInfo')|| '{}')
 	}),
 	
 	// 修改状态相关的方法
@@ -20,6 +22,14 @@ export default {
 		}, 
 		saveStorage(state) {
 			uni.setStorageSync('address',JSON.stringify(state.address))
+		},
+		updateUserInfo(state,user_info){
+			state.userInfo=user_info
+			this.commit('user/saveUserInfo')
+		},
+		// 本地化存储用户信息
+		saveUserInfo(state){
+			uni.setStorageSync('userInfo',JSON.stringify(state.userInfo))
 		}
 	},
 	
