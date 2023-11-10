@@ -3,6 +3,11 @@ import {mapGetters} from 'vuex'
 		computed:{
 			...mapGetters('cart',['goodsTotal'])
 		},
+		watch:{
+			goodsTotal(){
+				this.setBadge()
+			}
+		},
 		onShow() {
 			this.setBadge()
 		},

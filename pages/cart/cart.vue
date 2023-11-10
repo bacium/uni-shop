@@ -1,5 +1,5 @@
 <template>
-	<view class="cart-container">
+	<view class="cart-container" v-if="cart.length!==0">
 		<view class="cart-address">
 			<my-address></my-address>
 		</view>
@@ -26,6 +26,11 @@
 			<my-settle></my-settle>
 		</view>
 	</view>
+
+<view class="empty-box" v-else>
+	<image src="../../static/cart_empty@2x.png" class="empty-image"></image>
+	<text class="empty-text">空空如也~</text>
+</view>
 </template>
 
 <script>
@@ -56,7 +61,7 @@ import {mapState,mapMutations} from 'vuex'
 			this.toggleRadioState(e)
 		},
 		numberChangeEvent(e){
-			console.log(e);
+			// console.log(e);
 			this.updateGoodsCount(e)
 		},
 		delGoods(item){
@@ -93,5 +98,19 @@ padding-left: 5px;
 	left: 0;
 	width: 100%;
 	background-color: skyblue;
+}
+.empty-box{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 150px;
+	.empty-image{
+		height: 90px;
+		width: 90px;
+	}
+	.empty-text{
+		color: 14rpx;
+		margin-top: 15px;
+	}
 }
 </style>
