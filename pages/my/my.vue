@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="my-content">
 		<my-login v-if="!token"></my-login>
 		<my-userInfo v-else></my-userInfo>
 	</view>
@@ -22,5 +22,8 @@
 </script>
 
 <style lang="scss">
-
+page, .my-content {
+	height: 100%;
+	background-color: #f4f4f4;
+}
 </style>

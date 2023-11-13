@@ -56,6 +56,7 @@ import {mapState,mapMutations} from 'vuex'
 		},
 		methods:{
 			...mapMutations('cart',['toggleRadioState','updateGoodsCount','deleteGoods']),
+			
 		toggleRadio(e){
 			// console.log(e);
 			this.toggleRadioState(e)

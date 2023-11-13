@@ -18,8 +18,14 @@ $http.baseUrl="https://api-hmugo-web.itheima.net"
 // 请求拦截器
 $http.beforeRequest= function (option) {
 	uni.showLoading({
-		title:"数据正在加载……"
+		title:"数据正在加载…"
 	})
+	// console.log(option);
+	if(option.url.indexOf('/my/') !== -1) {
+		option.header={
+			Authorization:store.state.user.token
+		}
+	}
 }
 
 

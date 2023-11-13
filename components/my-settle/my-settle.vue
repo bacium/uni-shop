@@ -26,19 +26,22 @@
 		name:"my-settle",
 		data() {
 			return {
-				
+				second:3,
+				timeId:''
 			};
 		},
 		computed:{
 			...mapGetters('cart',['allSelect_count','goodsTotal','selected_All_Price']),
 			...mapGetters('user',['combineAddress']),
 			...mapState('user',['token']),
+			...mapState('cart',['cart']),
 			allChecked(){
 				return this.goodsTotal===this.allSelect_count
 			}
 		},
 		methods:{
 			...mapMutations('cart',['allCheckToggle']),
+			...mapMutations('user',['updateRedirectInfo']),
 			allCheckChange(){
 				this.allCheckToggle(!this.allChecked)
 			},
@@ -48,12 +51,83 @@
 				// 判断是否选择了收货地址
 				if(!this.combineAddress) return uni.$showMsg('请选择收货地址！')
 				// 判断是否登录
-				if(!this.token) {
-					uni.$showMsg('请先登录')
-					uni.switchTab({
-						url:'/pages/my/my'
-					})
+				// if(!this.token) {
+				// 	uni.$showMsg('请先登录')
+				// 	uni.switchTab({
+				// 		url:'/pages/my/my'
+				// 	})
+				// }
+				if(!this.token) return this.delayNavicate()
+				// 全部验证通过后调用支付接口
+				this.payment()
+			},
+			delayNavicate(){
+				this.second=3
+				this.showTips(this.second)
+				this.timeId=setInterval(()=>{
+				this.second--
+					if(this.second<=0) {
+						clearInterval(this.timeId)
+						uni.switchTab({
+							url:'/pages/my/my',
+							success: () => {
+								this.updateRedirectInfo({
+									openType:'switchTab',
+									from:'/pages/cart/cart'
+								})
+							}
+						})
+						return
+					}
+				this.showTips(this.second)
+				},1000)
+			},
+			showTips(n) {
+				uni.showToast({
+					icon:'none',
+					mask:true,
+					duration:1500,
+					title:'请登录后再结算！' + n + ' 秒后自动跳转到登录页',
+				})
+			},
+		async	payment(){
+				// 1. 创建订单
+				// 1.1 组织订单的信息对象
+				const orderInfo={
+					// 订单价格测试阶段写死0.01
+					// order_price:this.selected_All_Price,
+					order_price:0.01,
+					consignee_addr:this.combineAddress,
+					goods:this.cart.filter(x=>x.goods_state===true).map(x=>({
+						  goods_id: x.goods_id, 
+						  goods_number: x.goods_count, 
+						  goods_price: x.goods_price 
+					}))
 				}
+				// 1.2 发起请求创建订单
+				const {data}=await uni.$http.post('/api/public/v1/my/orders/create',orderInfo)
+				// console.log(res);
+				// 1.3 得到服务器响应的“订单编号”
+				if(data.meta.status!==200) return this.$showMsg('订单编号获取失败')
+					const  orderNumber = data.message.order_number
+					
+					// 2生成预支付订单信息
+					const {data:res2}=await uni.$http.post('/api/public/v1/my/orders/req_unifiedorder',{order_number:orderNumber})
+				if(res2.meta.status!==200) return this.$showMsg('预支付订单生成失败')
+				 const payInfo = res2.message.pay
+					// console.log(res2,payInfo,'res2');
+				 
+				 // 3发起微信支付
+				 const [err,succ]=await uni.requestPayment(payInfo)
+				 console.log(succ,'succ');
+				 if(err) return uni.$showMsg('订单未支付')
+				 const {data:res3}=await uni.$http.post('/api/public/v1/my/orders/chkOrder',{order_number:orderNumber})
+				 if(res3.meta.status!==200)return uni.$showMsg('订单未支付')
+				 console.log(res3,'订单支付回执');
+				 uni.showToast({
+				 	icon:'success',
+					title:'订单支付成功'
+				 })
 			}
 		}
 	}
