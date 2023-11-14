@@ -111,16 +111,22 @@
 				if(data.meta.status!==200) return this.$showMsg('订单编号获取失败')
 					const  orderNumber = data.message.order_number
 					
+					// 参数处理
+					const [fail,getProvider]=await uni.getProvider({service:'payment'})
+					if(getProvider.errMsg!=='getProvider:ok') return uni.$showMsg('获取Provider失败')
+					const provider=getProvider.provider
+					// console.log(provider,'payload');
+					
 					// 2生成预支付订单信息
 					const {data:res2}=await uni.$http.post('/api/public/v1/my/orders/req_unifiedorder',{order_number:orderNumber})
 				if(res2.meta.status!==200) return this.$showMsg('预支付订单生成失败')
 				 const payInfo = res2.message.pay
-					// console.log(res2,payInfo,'res2');
-				 
+				 payInfo.provider=provider[0]
+					console.log(payInfo,'res2');
 				 // 3发起微信支付
 				 const [err,succ]=await uni.requestPayment(payInfo)
 				 console.log(succ,'succ');
-				 if(err) return uni.$showMsg('订单未支付')
+				 if(err) return uni.$showMsg('订单未支付成功')
 				 const {data:res3}=await uni.$http.post('/api/public/v1/my/orders/chkOrder',{order_number:orderNumber})
 				 if(res3.meta.status!==200)return uni.$showMsg('订单未支付')
 				 console.log(res3,'订单支付回执');

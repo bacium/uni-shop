@@ -42,7 +42,7 @@
 			...mapMutations('user',['updateAddress']),
 		async	chooseAddress(){
 			const  res=await uni.chooseAddress().catch(err=>err)
-			console.log(res);
+			// console.log(res);
 			const [fail,success]=res
 			if(fail===null &&success.errMsg==="chooseAddress:ok") {
 			// this.address=success

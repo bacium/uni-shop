@@ -31,7 +31,7 @@
 			},
 		async	getToken(info){
 				const [err,success]=await uni.login().catch(err=>err)
-				// console.log(info,success);
+				// console.log(info,success,'0000');
 				if(success.errMsg==="login:ok"){
 					const query={
 						code:success.code,
@@ -41,9 +41,8 @@
 						signature:info.signature
 						
 					}
-					
 					const {data}=await uni.$http.post('/api/public/v1/users/wxlogin',query)
-					 console.log(data,'data');
+					 // console.log(data,'data');
 					 // if (data.meta.status !== 200) return uni.$showMsg('登录失败！')
 					 // 由于接口问题     默认把code当成token使用
 					 let token='Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIzLCJpYXQiOjE1NjQ3MzAwNzksImV4cCI6MTAwMTU2NDczMDA3OH0.YPt-XeLnjV-_1ITaXGY2FhxmCe4NvXuRnRB8OMCfnPo'

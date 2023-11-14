@@ -38,7 +38,8 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "abiFilters" : [ "armeabi-v7a" ]
             },
             "ios" : {},
             /* ios打包配置 */
@@ -53,10 +54,11 @@
         "appid" : "wxdd85798a326f0edb",
         "setting" : {
             "urlCheck" : false,
-			"checkSiteMap":false
+            "checkSiteMap" : false
         },
         "usingComponents" : true,
-        "permission" : {}
+        "permission" : {},
+        "requiredPrivateInfos" : [ "getLocation", "chooseLocation", "chooseAddress" ]
     },
     "vueVersion" : "2"
 }
