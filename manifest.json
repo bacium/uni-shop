@@ -41,16 +41,19 @@
                 ],
                 "abiFilters" : [ "armeabi-v7a" ]
             },
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* ios打包配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* SDK配置 */
     "quickapp" : {},
     /* 快应用特有相关 */
     "mp-weixin" : {
-        /* 小程序特有相关 */
         "appid" : "wxdd85798a326f0edb",
         "setting" : {
             "urlCheck" : false,
